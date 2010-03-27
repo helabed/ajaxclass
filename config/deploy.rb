@@ -83,7 +83,8 @@ set :use_sudo, false
 # for a site5 restart - i.e kill all dispatch.fcgi processess.
 namespace :deploy do
   task :restart do
-    run  "pkill -U #{user} dispatch.fcgi" 
+    #run  "pkill -U #{user} dispatch.fcgi" 
+    run "touch #{current_path}/tmp/restart.txt"
   end
 end
 
