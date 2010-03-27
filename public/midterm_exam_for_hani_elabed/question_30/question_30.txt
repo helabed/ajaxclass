@@ -1,0 +1,97 @@
+Question 30
+============
+Why are anonymous functions needed in javascript.
+Make sure to explain the problem and how anonymous function address the problem. (10 points)
+
+Answer 30
+=========
+
+Reason 1)
+---------
+To help us pass a function that has one or more arguments, but
+we don't want to invoke this function, we just want to pass it along to be
+invoked later, with its one or more arguments. Here is an example using
+event handlers. function addTask(arg1, arg2) will be invoked in the future
+when a button is clicked, and not immediately when we declare it here.
+
+function init() {
+    if(navigator.appName=="Microsoft Internet Explorer") {
+        document.getElementById("btnAdd").attachEvent("onclick", function() {addTask(arg1, arg2);});
+    } else {
+        document.getElementById("btnAdd").addEventListener("click", function() {addTask(arg1, arg2);}, false);
+    }
+}
+
+Reason 2)
+---------
+To control and guarantee the order of execution when we have 2 or more event handlers that are attached to a single control.
+Here is an example of where we don't know the execution order of addTask_1 and addTask_2
+
+function init_bad() {
+    if(navigator.appName=="Microsoft Internet Explorer") {
+        document.getElementById("btnAdd").attachEvent("onclick", function() {addTask_1(arg1, arg2);});
+        document.getElementById("btnAdd").attachEvent("onclick", function() {addTask_2(arg1, arg2);});
+    } else {
+        document.getElementById("btnAdd").addEventListener("click", function() {addTask_1(arg1, arg2);}, false);
+        document.getElementById("btnAdd").addEventListener("click", function() {addTask_2(arg1, arg2);}, false);
+    }
+}
+
+To guarantee the order of execution we can use a single anonymous function as follows:
+
+function init_good() {
+    if(navigator.appName=="Microsoft Internet Explorer") {
+        document.getElementById("btnAdd").attachEvent("onclick", function() {addTask_1(arg1, arg2);addTask_2(arg1, arg2);});
+    } else {
+        document.getElementById("btnAdd").addEventListener("click", function() {addTask_1(arg1, arg2);addTask_2(arg1, arg2);}, false);
+    }
+}
+
+Reason 3)
+---------
+To prevent the browser from hijacking the meaning of 'this' when using an object's instance
+method that I pass in as a parameter in an event handler call. Here is an example to explain it:
+
+function Task() {
+ var numOfTasks = 0;
+ this.incrementTaskNumber = function() { numOfTasks = numOfTasks +1;}
+}
+Task.prototype.addTask = function() { this.incrementTaskNumber(); }
+var myObject = new Task();
+
+In the code below, the browser will hijack 'this' when addTask is invoked.
+So inside addTask:
+  In non-IE browsers, the 'this' refers to the Button that we are attaching the Event to.
+  In IE, the 'this' refers to the function addTask itself, which does not know how to interpret 'incrementTaskNumber'. 
+
+function bad_init() {
+    if(navigator.appName=="Microsoft Internet Explorer") {
+        document.getElementById("btnAdd").attachEvent("onclick", myObject.addTask);
+    } else {
+        document.getElementById("btnAdd").addEventListener("click", myObject.addTask, false);
+    }
+}
+
+In the code below, I created a buffer to shield the 'this' from the browser when addTask is invoked.
+Now 'this' inside add task is shielded by the anonymous function.
+
+function good_init() {
+    if(navigator.appName=="Microsoft Internet Explorer") {
+        document.getElementById("btnAdd").attachEvent("onclick", function() {myObject.addTask();});
+    } else {
+        document.getElementById("btnAdd").addEventListener("click", function() {myObject.addTask();}, false);
+    }
+}
+
+
+Reason 4)
+---------
+To protect and freeze variables that we need to pass to other functions, we stash a copy of these variable
+inside a function definition as local variables, and then call the desired functions with these
+local variables. The copy that is stached as a local variable is then used, and we are guaranteed that it won't change,
+it is frozen as a local variable.
+
+
+
+
+
