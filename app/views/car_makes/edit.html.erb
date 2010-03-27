@@ -1,0 +1,16 @@
+<h1>Editing car_make</h1>
+
+<% form_for(@car_make) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @car_make %> |
+<%= link_to 'Back', car_makes_path %>
