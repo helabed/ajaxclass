@@ -1,0 +1,18 @@
+<p>
+  <b>Trim:</b>
+  <%=h @car_trim.trim %>
+</p>
+
+<p>
+  <b>Car model:</b>
+  <%=h @car_trim.car_model_id %>
+</p>
+
+<p>
+  <b>Price:</b>
+  <%=h @car_trim.price %>
+</p>
+
+
+<%= link_to 'Edit', edit_car_trim_path(@car_trim) %> |
+<%= link_to 'Back', car_trims_path %>

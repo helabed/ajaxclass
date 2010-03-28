@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :car_trims
+
+  map.resources :car_models
+
   map.resources :car_makes
 
   # The priority is based upon order of creation: first created -> highest priority.

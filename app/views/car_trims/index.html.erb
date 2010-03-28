@@ -1,0 +1,24 @@
+<h1>Listing car_trims</h1>
+
+<table>
+  <tr>
+    <th>Trim</th>
+    <th>Car model</th>
+    <th>Price</th>
+  </tr>
+
+<% @car_trims.each do |car_trim| %>
+  <tr>
+    <td><%=h car_trim.trim %></td>
+    <td><%=h car_trim.car_model_id %></td>
+    <td><%=h car_trim.price %></td>
+    <td><%= link_to 'Show', car_trim %></td>
+    <td><%= link_to 'Edit', edit_car_trim_path(car_trim) %></td>
+    <td><%= link_to 'Destroy', car_trim, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New car_trim', new_car_trim_path %>

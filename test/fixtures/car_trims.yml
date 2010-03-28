@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  trim: 
+  car_model_id: 
+  price: 9.99
+
+two:
+  trim: 
+  car_model_id: 
+  price: 9.99
