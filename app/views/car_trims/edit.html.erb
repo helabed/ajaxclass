@@ -8,8 +8,7 @@
     <%= f.text_field :trim %>
   </p>
   <p>
-    <%= f.label :car_model_id %><br />
-    <%= f.text_field :car_model_id %>
+    <%= f.collection_select(:car_model_id, @car_models, :id, :model) %>
   </p>
   <p>
     <%= f.label :price %><br />

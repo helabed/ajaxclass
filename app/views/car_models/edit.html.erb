@@ -8,8 +8,7 @@
     <%= f.text_field :model %>
   </p>
   <p>
-    <%= f.label :car_make_id %><br />
-    <%= f.text_field :car_make_id %>
+    <%= f.collection_select(:car_make_id, @car_makes, :id, :name) %>
   </p>
   <p>
     <%= f.submit 'Update' %>

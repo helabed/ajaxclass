@@ -25,6 +25,7 @@ class CarModelsController < ApplicationController
   # GET /car_models/new.xml
   def new
     @car_model = CarModel.new
+		@car_makes = CarMake.find(:all)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,6 +36,7 @@ class CarModelsController < ApplicationController
   # GET /car_models/1/edit
   def edit
     @car_model = CarModel.find(params[:id])
+		@car_makes = CarMake.find(:all)
   end
 
   # POST /car_models
