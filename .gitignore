@@ -18,6 +18,7 @@ tmp/*.html
 *~
 *.swp
 *.class
+mkmf.log
 public/images/Thumbs.db
 public/images/active_scaffold/DO_NOT_EDIT
 public/javascripts/active_scaffold/DO_NOT_EDIT
