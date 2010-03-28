@@ -11,6 +11,9 @@
     <%= f.collection_select(:car_model_id, @car_models, :id, :model) %>
   </p>
   <p>
+    <%= f.label  @car_trim.car_model.car_make.name %>
+  </p>
+  <p>
     <%= f.label :price %><br />
     <%= f.text_field :price %>
   </p>

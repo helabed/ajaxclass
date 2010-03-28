@@ -4,6 +4,7 @@
   <tr>
     <th>Trim</th>
     <th>Car model</th>
+    <th>Car make</th>
     <th>Price</th>
   </tr>
 
@@ -11,6 +12,7 @@
   <tr>
     <td><%=h car_trim.trim %></td>
     <td><%=h car_trim.car_model.model %></td>
+    <td><%=h car_trim.car_model.car_make.name %></td>
     <td><%=h car_trim.price %></td>
     <td><%= link_to 'Show', car_trim %></td>
     <td><%= link_to 'Edit', edit_car_trim_path(car_trim) %></td>

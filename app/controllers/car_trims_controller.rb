@@ -36,7 +36,7 @@ class CarTrimsController < ApplicationController
   # GET /car_trims/1/edit
   def edit
     @car_trim = CarTrim.find(params[:id])
-		@car_models = CarModel.find(:all)
+		@car_models = CarModel.find(:all, :conditions => [ "car_make_id = #{@car_trim.car_model.car_make_id}" ])
   end
 
   # POST /car_trims
