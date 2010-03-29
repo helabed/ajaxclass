@@ -7,6 +7,7 @@ class CarModelsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @car_models }
+			format.json { render :layout => false, :json => @car_models } 
     end
   end
 
