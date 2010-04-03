@@ -7,18 +7,20 @@
 <body>
   <div id="spinner"></div>
   <div id="content" style="display: none;">
-    Car Makes: <select id="carMakes"></select>
-    <br />
-    Car Models: <select id="carModels"></select>
-    <br />
-    Car Trims: <select id="carTrims"></select>
-    <br />
+    <div id="carMakesContainer">
+      Car Makes: <select id="carMakes"></select>
+    </div>
+    <div id="carModelsContainer">
+      Car Models: <select id="carModels"></select>
+    </div>
+    <div id="carTrimsContainer">
+      Car Trims: <select id="carTrims"></select>
+    </div>
   </div>
 </body>
 </html>
 
 <script type="text/javascript">
-  //init();
   if(navigator.appName=="Microsoft Internet Explorer") {
     window.attachEvent("onload", init);
   }else {

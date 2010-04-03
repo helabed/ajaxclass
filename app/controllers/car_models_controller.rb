@@ -2,12 +2,16 @@ class CarModelsController < ApplicationController
   # GET /car_models
   # GET /car_models.xml
   def index
-    @car_models = CarModel.all
+    if( params[:car_make_id] )
+      @car_models = CarModel.find(:all, :conditions => ["car_make_id = ?", params[:car_make_id]])
+    else
+      @car_models = CarModel.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @car_models }
-			format.json { render :layout => false, :json => @car_models } 
+      format.json { render :layout => false, :json => @car_models }
     end
   end
 
