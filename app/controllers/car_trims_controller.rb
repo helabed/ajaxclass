@@ -2,7 +2,11 @@ class CarTrimsController < ApplicationController
   # GET /car_trims
   # GET /car_trims.xml
   def index
-    @car_trims = CarTrim.all
+    if( params[:car_model_id] )
+      @car_trims = CarTrim.find(:all, :conditions => ["car_model_id = ?", params[:car_model_id]])
+    else
+      @car_trims = CarTrim.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb

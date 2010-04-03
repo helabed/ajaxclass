@@ -1,14 +1,14 @@
 function init() {
-  var label_cell_id = "spinner";
-  var waitingImage = InProgressSpinner.showInProgressImage(label_cell_id);
+  var spinner_id = "spinner";
+  var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
   init_car_models_events_handler();
-  populate_car_makes_selection(waitingImage, label_cell_id);
+  populate_car_makes_selection(inProgressImage, spinner_id);
 }
 
 
 
 
-function populate_car_makes_selection(waitingImage, label_cell_id) {
+function populate_car_makes_selection(inProgressImage, spinner_id) {
   var ajaxObj;
   if(window.XMLHttpRequest) {
     ajaxObj = new XMLHttpRequest();
@@ -35,7 +35,7 @@ function populate_car_makes_selection(waitingImage, label_cell_id) {
         a_car_make.appendChild(document.createTextNode(myObj[i].car_make.name)); //<option value="1">Toyota</option>
         car_makes.appendChild(a_car_make);
       }
-      InProgressSpinner.hideInProgressImage(label_cell_id, waitingImage);
+      InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
       document.getElementById("content").style.display = "";
     }
   }
@@ -47,6 +47,9 @@ function populate_car_makes_selection(waitingImage, label_cell_id) {
 }
 
 
+
+
+
 function init_car_models_events_handler() {
   var load_car_models = function() {
     var ajaxObj;
@@ -55,8 +58,8 @@ function init_car_models_events_handler() {
     } else {
       ajaxObj = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    var label_cell_id = "spinner";
-    var waitingImage = InProgressSpinner.showInProgressImage(label_cell_id);
+    var spinner_id = "spinner";
+    var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
     ajaxObj.onreadystatechange = function() {
       //0 open has not been called
       //1 open has been called but not send
@@ -80,7 +83,12 @@ function init_car_models_events_handler() {
           car_models.appendChild(a_car_model);
         }
         parent_node_of_car_models.appendChild(car_models);
-        InProgressSpinner.hideInProgressImage(label_cell_id, waitingImage);
+
+        // we are doing the init here because the Car Trims Selection list depends on the Car Models Selection list
+        // and we need the latest version of the selection list element, not the one that was deleted above.
+        init_car_trims_events_handler();
+
+        InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
       }
     }
     var selected_car_make_id = document.getElementById("carMakes").value;
@@ -98,6 +106,64 @@ function init_car_models_events_handler() {
     car_makes.addEventListener("change", load_car_models, false); // false, i.e don not stop event propagation
   }
 }
+
+
+
+
+
+function init_car_trims_events_handler() {
+  var load_car_trims = function() {
+    var ajaxObj;
+    if(window.XMLHttpRequest) {
+      ajaxObj = new XMLHttpRequest();
+    } else {
+      ajaxObj = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    var spinner_id = "spinner";
+    var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
+    ajaxObj.onreadystatechange = function() {
+      //0 open has not been called
+      //1 open has been called but not send
+      //2 send has been called but no response from the server
+      //3 data is in the process of being received
+      //4 response from the server  is ready to be processed
+      if(ajaxObj.readyState==4) {
+        var myObj = JSON.parse(ajaxObj.responseText);
+        var old_car_trims = document.getElementById("carTrims");
+        if( old_car_trims ) {
+          var parent_node_of_car_trims = old_car_trims.parentNode;
+          old_car_trims.parentNode.removeChild(old_car_trims);
+        }
+        var car_trims = document.createElement("select");
+        car_trims.setAttribute("id", "carTrims");
+        car_trims.className = "car_trims_class";
+        for( var i = 0; i < myObj.length; i++ ) {
+          var a_car_trim = document.createElement("option"); //<option></option>
+          a_car_trim.setAttribute("value", myObj[i].car_trim.id);//<option value="1"></option>
+          a_car_trim.appendChild(document.createTextNode(myObj[i].car_trim.trim)); //<option value="1">prius</option>
+          car_trims.appendChild(a_car_trim);
+        }
+        parent_node_of_car_trims.appendChild(car_trims);
+        InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
+      }
+    }
+    var selected_car_model_id = document.getElementById("carModels").value;
+    //open (method, url,async)
+    ajaxObj.open("get", "/car_trims.json?car_model_id="+selected_car_model_id, true);
+    //send
+    ajaxObj.send(null);
+  }
+  var car_models = document.getElementById("carModels");
+  if( navigator.appName == "Microsoft Internet Explorer") {
+    car_models.attachEvent("onchange", load_car_trims); // IE only
+  } else {
+      // firefox this is the control that triggered the event...
+      // undefined in IE
+    car_models.addEventListener("change", load_car_trims, false); // false, i.e don not stop event propagation
+  }
+}
+
+
 
 
 function InProgressSpinner() {};
