@@ -1,7 +1,7 @@
 function init() {
   var spinner_id = "spinner";
   var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
-  init_car_models_events_handler();
+  init_car_makes_events_handler();
   populate_car_makes_selection(inProgressImage, spinner_id);
 }
 
@@ -50,7 +50,7 @@ function populate_car_makes_selection(inProgressImage, spinner_id) {
 
 
 
-function init_car_models_events_handler() {
+function init_car_makes_events_handler() {
   var car_makes = document.getElementById("carMakes");
   if( navigator.appName == "Microsoft Internet Explorer") {
     car_makes.attachEvent("onchange", update_selection_list_function); // IE only
@@ -65,7 +65,7 @@ function init_car_models_events_handler() {
 
 
 
-function init_car_trims_events_handler() {
+function init_car_models_events_handler() {
   var car_models = document.getElementById("carModels");
   if( navigator.appName == "Microsoft Internet Explorer") {
     car_models.attachEvent("onchange", load_car_trims); // IE only
@@ -128,7 +128,7 @@ var load_car_models = function() {
 
 			// we are doing the init here because the Car Trims Selection list depends on the Car Models Selection list
 			// and we need the latest version of the selection list element, not the one that was deleted above.
-			init_car_trims_events_handler();
+			init_car_models_events_handler();
 
 			InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
 		}
@@ -168,6 +168,13 @@ var load_car_trims = function() {
 			var car_trims = document.createElement("select");
 			car_trims.setAttribute("id", "carTrims");
 			car_trims.className = "car_trims_class";
+
+
+			var empty_car_trim = document.createElement("option"); //<option></option>
+			empty_car_trim.setAttribute("value", 0);//<option value="0"></option>
+			empty_car_trim.appendChild(document.createTextNode("")); //<option value="0"></option>
+			car_trims.appendChild(empty_car_trim);
+
 			for( var i = 0; i < myObj.length; i++ ) {
 				var a_car_trim = document.createElement("option"); //<option></option>
 				a_car_trim.setAttribute("value", myObj[i].car_trim.id);//<option value="1"></option>
