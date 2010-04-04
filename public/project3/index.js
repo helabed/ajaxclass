@@ -5,18 +5,23 @@ function init() {
 
 
 function init_car_makes_events_handler() {
-  var car_makes = document.getElementById("carMakes");
+  init_onchange_event_handler("carMakes", update_selection_list_function);
+}
+
+
+function init_onchange_event_handler(control_id, call_back_function) {
+  var control = document.getElementById(control_id);
   if( navigator.appName == "Microsoft Internet Explorer") {
-    car_makes.attachEvent("onchange", update_selection_list_function); // IE only
+    control.attachEvent("onchange", call_back_function); // IE only
   } else {
-    car_makes.addEventListener("change", update_selection_list_function, false); 
+    control.addEventListener("change", call_back_function, false);
   }
 }
 
 
 var update_selection_list_function = function () {
   populate_car_models_selection();
-	clear_selection_list("carTrims");
+  clear_selection_list("carTrims");
 }
 
 
@@ -32,56 +37,76 @@ function car_makes_callback(result_obj) {
 
 
 function populate_car_models_selection() {
-	var selected_car_make_id = document.getElementById("carMakes").value;
+  var selected_car_make_id = document.getElementById("carMakes").value;
   make_ajax_request("/car_models.json?car_make_id="+selected_car_make_id, car_models_callback)
 }
 
 
 function car_models_callback(result_obj) {
-	clear_selection_list("carModels");
+  clear_selection_list("carModels");
   populate_selection_list( "carModels", "car_model", "id", "model", result_obj );
-	init_car_models_events_handler();
+  init_car_models_events_handler();
 }
 
 
 function init_car_models_events_handler() {
-  var car_models = document.getElementById("carModels");
-  if( navigator.appName == "Microsoft Internet Explorer") {
-    car_models.attachEvent("onchange", populate_car_trims_selection); // IE only
-  } else {
-    car_models.addEventListener("change", populate_car_trims_selection, false);
-  }
+  init_onchange_event_handler("carModels", populate_car_trims_selection);
 }
 
 
 function populate_car_trims_selection() {
-	var selected_car_model_id = document.getElementById("carModels").value;
+  var selected_car_model_id = document.getElementById("carModels").value;
   make_ajax_request("/car_trims.json?car_model_id="+selected_car_model_id, car_trims_callback)
 }
 
 
 function car_trims_callback(result_obj) {
-	clear_selection_list("carTrims");
+  clear_selection_list("carTrims");
   populate_selection_list( "carTrims", "car_trim", "id", "trim", result_obj );
-	init_car_trims_events_handler();
+  init_car_trims_events_handler();
 }
 
 function init_car_trims_events_handler() {
-  var car_models = document.getElementById("carTrims");
-  if( navigator.appName == "Microsoft Internet Explorer") {
-    car_models.attachEvent("onchange", car_trims_selection_changed); // IE only
-  } else {
-    car_models.addEventListener("change", car_trims_selection_changed, false);
-  }
+  init_onchange_event_handler("carTrims", car_trims_selection_changed);
 }
 
 function car_trims_selection_changed() {
-	var selected_car_trim_id = document.getElementById("carTrims").value;
-	var selected_car_trim_text = document.getElementById("carTrims").text;;
-  alert("you selected: "+selected_car_trim_id);
-  alert("you selected: "+selected_car_trim_text);
+  var selected_car_trim = get_selected_object("carTrims");
+  var car_trim_id = selected_car_trim.value;
+  var car_trim_text = selected_car_trim.text;
+
+  var selected_car_model = get_selected_object("carModels");
+  var car_model_id = selected_car_model.value;
+  var car_model_text = selected_car_model.text;
+
+  var selected_car_make = get_selected_object("carMakes");
+  var car_make_id = selected_car_make.value;
+  var car_make_text = selected_car_make.text;
+
+  alert("you selected: "+car_make_text+ ", id="+ car_make_id +
+    "\n"+car_model_text+ ", id="+ car_model_id +
+    "\n"+car_trim_text+ ", id="+ car_trim_id);
+
+  make_ajax_request("/car_trims/23.json", a_car_trim_callback)
 }
 
+
+function a_car_trim_callback(result_obj) {
+  alert("Price: "+result_obj.car_trim.price);
+}
+
+
+
+function get_selected_object(select_id) {
+  var selected_option_tag = document.getElementById(select_id);
+  var option_tag_id = selected_option_tag.value;
+
+  var selectedIndex = selected_option_tag.selectedIndex;
+  var option_tag_text = selected_option_tag.options[selectedIndex].text;
+
+  return {"text" : option_tag_text,
+          "value": option_tag_id};
+}
 
 
 
