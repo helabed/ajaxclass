@@ -1,14 +1,37 @@
 function init() {
-  var spinner_id = "spinner";
-  var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
   init_car_makes_events_handler();
-  populate_car_makes_selection(inProgressImage, spinner_id);
+  populate_car_makes_selection();
 }
 
 
+function populate_car_makes_selection() {
+  populate_selection_list( "carMakes", "/car_makes.json", "car_make", "id", "name" );
+}
 
 
-function populate_car_makes_selection(inProgressImage, spinner_id) {
+function init_car_makes_events_handler() {
+  var car_makes = document.getElementById("carMakes");
+  if( navigator.appName == "Microsoft Internet Explorer") {
+    car_makes.attachEvent("onchange", update_selection_list_function); // IE only
+  } else {
+    car_makes.addEventListener("change", update_selection_list_function, false); 
+  }
+}
+
+
+function init_car_models_events_handler() {
+  var car_models = document.getElementById("carModels");
+  if( navigator.appName == "Microsoft Internet Explorer") {
+    car_models.attachEvent("onchange", load_car_trims); // IE only
+  } else {
+    car_models.addEventListener("change", load_car_trims, false);
+  }
+}
+
+
+function populate_selection_list(select_id, request, json_obj, option_value, option_text) {
+  var spinner_id = "spinner";
+  var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
   var ajaxObj;
   if(window.XMLHttpRequest) {
     ajaxObj = new XMLHttpRequest();
@@ -16,31 +39,29 @@ function populate_car_makes_selection(inProgressImage, spinner_id) {
     ajaxObj = new ActiveXObject("Microsoft.XMLHTTP");
   }
   ajaxObj.onreadystatechange = function() {
-    //0 open has not been called
-    //1 open has been called but not send
-    //2 send has been called but no response from the server
-    //3 data is in the process of being received
-    //4 response from the server  is ready to be processed
     if(ajaxObj.readyState==4) {
       var myObj = JSON.parse(ajaxObj.responseText);
-      var car_makes = document.getElementById("carMakes");
+      var select_list = document.getElementById(select_id);
 
-      var empty_car_make = document.createElement("option"); //<option></option>
-      empty_car_make.setAttribute("value", 0);//<option value="0"></option>
-      empty_car_make.appendChild(document.createTextNode("")); //<option value="0"></option>
-      car_makes.appendChild(empty_car_make);
+      var empty_option_tag = document.createElement("option"); //<option></option>
+      empty_option_tag.setAttribute("value", 0);//<option value="0"></option>
+      empty_option_tag.appendChild(document.createTextNode("")); //<option value="0"></option>
+      select_list.appendChild(empty_option_tag);
       for( var i = 0; i < myObj.length; i++ ) {
-        var a_car_make = document.createElement("option"); //<option></option>
-        a_car_make.setAttribute("value", myObj[i].car_make.id);//<option value="1"></option>
-        a_car_make.appendChild(document.createTextNode(myObj[i].car_make.name)); //<option value="1">Toyota</option>
-        car_makes.appendChild(a_car_make);
+        var a_option_tag = document.createElement("option"); //<option></option>
+        var my_json_obj_i = myObj[i][json_obj];
+        a_option_tag.setAttribute("value", my_json_obj_i[option_value]);//<option value="1"></option>
+        a_option_tag.appendChild(document.createTextNode(my_json_obj_i[option_text])); //<option value="1">Toyota</option>
+        //a_option_tag.setAttribute("value", myObj[i].car_make.id);//<option value="1"></option>
+        //a_option_tag.appendChild(document.createTextNode(myObj[i].car_make.name)); //<option value="1">Toyota</option>
+        select_list.appendChild(a_option_tag);
       }
       InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
       document.getElementById("content").style.display = "";
     }
   }
   //open (method, url,async)
-  ajaxObj.open("get", "/car_makes.json", true);
+  ajaxObj.open("get", request, true);
 
   //send
   ajaxObj.send(null);
@@ -50,58 +71,38 @@ function populate_car_makes_selection(inProgressImage, spinner_id) {
 
 
 
-function init_car_makes_events_handler() {
-  var car_makes = document.getElementById("carMakes");
-  if( navigator.appName == "Microsoft Internet Explorer") {
-    car_makes.attachEvent("onchange", update_selection_list_function); // IE only
-  } else {
-      // firefox this is the control that triggered the event...
-      // undefined in IE
-    car_makes.addEventListener("change", update_selection_list_function, false); 
-			// false, i.e don not stop event propagation
-  }
-}
-
-
-
-
-function init_car_models_events_handler() {
-  var car_models = document.getElementById("carModels");
-  if( navigator.appName == "Microsoft Internet Explorer") {
-    car_models.attachEvent("onchange", load_car_trims); // IE only
-  } else {
-      // firefox this is the control that triggered the event...
-      // undefined in IE
-    car_models.addEventListener("change", load_car_trims, false); // false, i.e don not stop event propagation
-  }
-}
-
-
 
 
 var update_selection_list_function = function () {
 	load_car_models();
-	load_car_trims();
+  //clear_selection_list("carModels");
+  //populate_selection_list( "carModels", "/car_models.json", "car_model", "id", "model" );
+
+	clear_selection_list("carTrims");
+}
+
+var clear_selection_list = function (select_id) {
+  var old_select = document.getElementById(select_id);
+  if( old_select ) {
+    var parent_node_of_select = old_select.parentNode;
+    old_select.parentNode.removeChild(old_select);
+  }
+  var new_select = document.createElement("select");
+  new_select.setAttribute("id", select_id);
+  parent_node_of_select.appendChild(new_select);
 }
 
 
-
-
 var load_car_models = function() {
+	var spinner_id = "spinner";
+	var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
 	var ajaxObj;
 	if(window.XMLHttpRequest) {
 		ajaxObj = new XMLHttpRequest();
 	} else {
 		ajaxObj = new ActiveXObject("Microsoft.XMLHTTP");
 	}
-	var spinner_id = "spinner";
-	var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
 	ajaxObj.onreadystatechange = function() {
-		//0 open has not been called
-		//1 open has been called but not send
-		//2 send has been called but no response from the server
-		//3 data is in the process of being received
-		//4 response from the server  is ready to be processed
 		if(ajaxObj.readyState==4) {
 			var myObj = JSON.parse(ajaxObj.responseText);
 			var old_car_models = document.getElementById("carModels");
@@ -153,11 +154,6 @@ var load_car_trims = function() {
 	var spinner_id = "spinner";
 	var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
 	ajaxObj.onreadystatechange = function() {
-		//0 open has not been called
-		//1 open has been called but not send
-		//2 send has been called but no response from the server
-		//3 data is in the process of being received
-		//4 response from the server  is ready to be processed
 		if(ajaxObj.readyState==4) {
 			var myObj = JSON.parse(ajaxObj.responseText);
 			var old_car_trims = document.getElementById("carTrims");
