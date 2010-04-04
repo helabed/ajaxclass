@@ -7,21 +7,65 @@
 </head>
 <body>
   <div id="spinner"></div>
+  <h1>Monthly Car Payment Calculation</h1>
   <div id="content" style="display: none;">
-    <div id="carMakesContainer">
-      Car Makes: <select id="carMakes"></select>
-    </div>
-    <div id="carModelsContainer">
-      Car Models: <select id="carModels"></select>
-    </div>
-    <div id="carTrimsContainer">
-      Car Trims: <select id="carTrims"></select>
-    </div>
-  </div>
-  <div class="output" id="output" style="display: none;">
-    <!-- output from user's entered values is shown here after clicking the 'Validate' button -->
-  </div>
-</body>
+    <form method="post" action="house_eval">
+      <p id="carMakesContainer">
+        <label for="car_makes_container">Car Makes:</label>
+        <select name="car_makes_container" id="carMakes"></select>
+      </p>
+      <p id="carModelsContainer">
+        <label for="car_models_container">Car Models:</label>
+        <select name="car_models_container" id="carModels"></select>
+      </p>
+      <p id="carTrimsContainer">
+        <label for="car_trims_container">Car Trims:</label>
+        <select name="car_trims_container" id="carTrims"></select>
+      </p>
+      <p>
+        <label for="loan_amount">Loan Amount:</label>
+        <input type="text" name="loan_amount" id="loan_amount" class="txt" />
+        <span id="error_message_for_loan_amount"></span>
+      </p>
+      <p>
+        <label for="down_payment">Down Payment:</label>
+        <input type="text" name="down_payment" id="down_payment" class="txt" />
+        <span id="error_message_for_down_payment"></span>
+      </p>
+      <p>
+        <label for="interest_rate">Interest Rate(%):</label>
+        <select name="interest_rate" id="interest_rate">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+        </select>
+        <span id="error_message_for_interest_rate"></span>
+      </p>
+      <p>
+        <label for="duration_in_months">Loan Duration(months):</label>
+        <select name="duration_in_months" id="duration_in_months">
+          <option value="24">24</option>
+          <option value="36">36</option>
+          <option value="48">48</option>
+          <option value="60">60</option>
+          <option value="72">72</option>
+        </select>
+        <span id="error_message_for_duration_in_months"></span>
+      </p>
+      <p>
+        <input type="button" name="calculate_button" id="calculate_button" value="Calculate Monthly Payment" class="btn" />
+        <span id="error_message_for_calculate_button"></span>
+      </p>
+    </form>
+  </body>
 </html>
 
 <script type="text/javascript">

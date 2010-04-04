@@ -42,10 +42,6 @@ function CarService() {
 
 };
 
-CarService.init =  function() {
-  CarServiceMisc.init_old();
-}
-
 
 var CarServiceMisc = ( function () {
 
@@ -129,10 +125,6 @@ var CarServiceMisc = ( function () {
     var car_make_id = selected_car_make.value;
     var car_make_text = selected_car_make.text;
 
-    //alert("you selected: "+car_make_text+ ", id="+ car_make_id +
-    //  "\n"+car_model_text+ ", id="+ car_model_id +
-    //  "\n"+car_trim_text+ ", id="+ car_trim_id);
-
     var myService = new CarService();
     myService.setCarMake(car_make_text);
     myService.setCarModel(car_model_text);
@@ -142,18 +134,18 @@ var CarServiceMisc = ( function () {
       var car_service_obj = myService;
       a_car_trim_callback(result_obj, car_service_obj);
     }
-    make_ajax_request("/car_trims/23.json", my_2_params_function)
+    make_ajax_request("/car_trims/"+car_trim_id+".json", my_2_params_function)
   }
 
 
   function a_car_trim_callback(result_obj, that) {
     that.setCarPrice( result_obj.car_trim.price );
-    //alert("Price: "+result_obj.car_trim.price);
-    alert("you selected: " +
-      "\n"+that.getCarMake()+ 
-      "\n"+that.getCarModel()+ 
-      "\n"+that.getCarTrim()+ 
-      "\n"+that.getCarPrice());
+    //alert("you selected: " +
+    //  "\n"+that.getCarMake()+
+    //  "\n"+that.getCarModel()+
+    //  "\n"+that.getCarTrim()+
+    //  "\n"+that.getCarPrice());
+    document.getElementById("loan_amount").value = that.getCarPrice();
   }
 
 
