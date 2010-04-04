@@ -189,7 +189,6 @@ var CarServiceMisc = ( function () {
       a_option_tag.appendChild(document.createTextNode(my_json_obj_i[option_text])); //<option value="1">Toyota</option>
       select_list.appendChild(a_option_tag);
     }
-    document.getElementById("content").style.display = "";
   }
 
 
@@ -221,6 +220,7 @@ var CarServiceMisc = ( function () {
     init:  function() {
       init_car_makes_events_handler();
       populate_car_makes_selection();
+      document.getElementById("content").style.display = "";
     }
   };
 
