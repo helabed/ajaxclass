@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>Project 3 - Car Dealership</title>
+  <link   type="text/css" rel="stylesheet" href="./style.css" />
   <script type="text/javascript" src="./json2.js"></script>
   <script type="text/javascript" src="./index.js"></script>
 </head>
@@ -17,13 +18,16 @@
       Car Trims: <select id="carTrims"></select>
     </div>
   </div>
+  <div class="output" id="output" style="display: none;">
+    <!-- output from user's entered values is shown here after clicking the 'Validate' button -->
+  </div>
 </body>
 </html>
 
 <script type="text/javascript">
   if(navigator.appName=="Microsoft Internet Explorer") {
-    window.attachEvent("onload", init);
+    window.attachEvent("onload", CarDealership.init);
   }else {
-    window.addEventListener("load", init, false);
+    window.addEventListener("load", CarDealership.init, false);
   }
 </script>
