@@ -241,7 +241,7 @@ function InProgressSpinner() {};
 
 InProgressSpinner.showInProgressImage = function( section_id ) {
   var waitingImage = document.createElement("img");
-  waitingImage.setAttribute("src","/images/spinner_red_large.gif");
+  waitingImage.setAttribute("src","./images/ajax.gif");
   var tag_used = document.getElementById(section_id);
   document.getElementById(section_id).appendChild(waitingImage);
   return waitingImage;
