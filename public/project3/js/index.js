@@ -43,7 +43,32 @@ function CarService() {
 };
 
 
+// learned this style of encapsulating all code in a function that returns an object containing
+// function names as keys from watching the Douglas Crockford videos on Javascript the Good part.
 var CarServiceMisc = ( function () {
+
+  var car_service_instance;
+
+  function init_calc_button_event_handler() {
+    //enable button click, do not use HTML event handler like onclick(..)
+    var calculateButton = document.getElementById("calculate_button");
+    if( navigator.appName == "Microsoft Internet Explorer") {
+      calculateButton.attachEvent("onclick", calculateButtonFunction); // IE only
+    } else {
+      calculateButton.addEventListener("click", calculateButtonFunction, false);
+    }
+  }
+
+  function calculateButtonFunction() {
+    var down_payment = document.getElementById("down_payment").value;
+    var my_car_service_instance = CarServiceMisc.getCarService();
+    my_car_service_instance.setDownPayment(down_payment);
+
+    alert( my_car_service_instance.getDownPayment() );
+    alert( get_selected_object("interest_rate").text );
+    alert( get_selected_object("duration_in_months").text );
+    alert( "Monthly Payment: $"+my_car_service_instance.calcMonthlyPayment());
+  }
 
 
   function init_car_makes_events_handler() {
@@ -146,6 +171,7 @@ var CarServiceMisc = ( function () {
     //  "\n"+that.getCarTrim()+
     //  "\n"+that.getCarPrice());
     document.getElementById("loan_amount").value = that.getCarPrice();
+    CarServiceMisc.setCarService(that);
   }
 
 
@@ -217,7 +243,14 @@ var CarServiceMisc = ( function () {
 
 
   return {
+    setCarService:  function(in_value) {
+      car_service_instance = in_value;
+    },
+    getCarService:  function() {
+      return car_service_instance;
+    },
     init:  function() {
+      init_calc_button_event_handler();
       init_car_makes_events_handler();
       populate_car_makes_selection();
       document.getElementById("content").style.display = "";
