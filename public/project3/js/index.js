@@ -73,6 +73,8 @@ var CarServiceMisc = ( function () {
 
 
   function calculateButtonFunction() {
+    var loan_amount_valid = false;
+    var down_payment_valid = false;
     var error_occured = false;
     var error_id_prefix = ElabedEnterprisesLLC.error_id_prefix;
     var my_car_service_instance = CarServiceMisc.getCarService();
@@ -84,8 +86,9 @@ var CarServiceMisc = ( function () {
                                                           error_id_prefix,
                                                           "numbers only, 2 to 7 digits",
                                                           /^([0-9]{2,7})$/ ) == true ) {
-          if( my_car_service_instance ) {
+          if( my_car_service_instance && loan_amount ) {
             my_car_service_instance.setLoanAmount(parseInt(loan_amount));
+            loan_amount_valid = true;
           }
         }
       }
@@ -101,8 +104,9 @@ var CarServiceMisc = ( function () {
                                                           error_id_prefix,
                                                           "numbers only, 2 to 6 digits",
                                                           /^([0-9]{2,6})$/ ) == true ) {
-          if( my_car_service_instance ) {
+          if( my_car_service_instance && down_payment ) {
             my_car_service_instance.setDownPayment(parseInt(down_payment));
+            down_payment_valid = true;
           }
         }
       }
@@ -112,7 +116,7 @@ var CarServiceMisc = ( function () {
     }
 
 
-    if( error_occured === false )
+    if( error_occured === false && loan_amount_valid && down_payment_valid )
     {
       my_car_service_instance.setInterestRate(get_selected_object("interest_rate").text);
       my_car_service_instance.setDurationInMonths(get_selected_object("duration_in_months").text);
