@@ -59,9 +59,8 @@ form div.previous_courses_checkboxes label.checkbox_label
   padding-left: 20%;
 }
 
-#error_message_for_levels,
-#error_message_for_square_feet,
-#error_message_for_bathrooms
+#error_message_for_down_payment,
+#error_message_for_loan_amount
 {
   color: red;
   font: 0.9em Arial, Helvetica, sans-serif;

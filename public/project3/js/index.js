@@ -12,6 +12,7 @@ function CarService() {
   var the_car_price;
 
 
+  var loan_amount;
   var loan_down_payment;
   var loan_interest_rate;
   var loan_duration_in_months;
@@ -36,12 +37,23 @@ function CarService() {
 
 
 
+  this.getLoanAmount = function()  { return loan_loan_amount; }
+  this.setLoanAmount = function(in_value) { loan_loan_amount = in_value; }
 
   this.getDownPayment = function()  { return loan_down_payment; }
   this.setDownPayment = function(in_value) { loan_down_payment = in_value; }
 
+  this.getInterestRate = function()  { return loan_interest_rate; }
+  this.setInterestRate = function(in_value) { loan_interest_rate = in_value; }
+
+  this.getDurationInMonths = function()  { return loan_duration_in_months; }
+  this.setDurationInMonths = function(in_value) { loan_duration_in_months = in_value; }
+
 };
 
+CarService.prototype.calcMonthlyPayment = function() {
+  return 5000;
+}
 
 // learned this style of encapsulating all code in a function that returns an object containing
 // function names as keys from watching the Douglas Crockford videos on Javascript the Good part.
@@ -59,15 +71,57 @@ var CarServiceMisc = ( function () {
     }
   }
 
-  function calculateButtonFunction() {
-    var down_payment = document.getElementById("down_payment").value;
-    var my_car_service_instance = CarServiceMisc.getCarService();
-    my_car_service_instance.setDownPayment(down_payment);
 
-    alert( my_car_service_instance.getDownPayment() );
-    alert( get_selected_object("interest_rate").text );
-    alert( get_selected_object("duration_in_months").text );
-    alert( "Monthly Payment: $"+my_car_service_instance.calcMonthlyPayment());
+  function calculateButtonFunction() {
+    var error_occured = false;
+    var error_id_prefix = ElabedEnterprisesLLC.error_id_prefix;
+    var my_car_service_instance = CarServiceMisc.getCarService();
+
+    try {
+      var loan_amount = document.getElementById("loan_amount").value;
+      if( ElabedEnterprisesLLC.validate_textfield_is_not_empty("loan_amount", error_id_prefix) == true ) {
+        if( ElabedEnterprisesLLC.validate_numericality_of("loan_amount",
+                                                          error_id_prefix,
+                                                          "numbers only, 2 to 7 digits",
+                                                          /^([0-9]{2,7})$/ ) == true ) {
+          if( my_car_service_instance ) {
+            my_car_service_instance.setLoanAmount(parseInt(loan_amount));
+          }
+        }
+      }
+    } catch(ex) {
+      alert(ex.message);
+      error_occured = true;
+    }
+
+    try {
+      var down_payment = document.getElementById("down_payment").value;
+      if( ElabedEnterprisesLLC.validate_textfield_is_not_empty("down_payment", error_id_prefix) == true ) {
+        if( ElabedEnterprisesLLC.validate_numericality_of("down_payment",
+                                                          error_id_prefix,
+                                                          "numbers only, 2 to 6 digits",
+                                                          /^([0-9]{2,6})$/ ) == true ) {
+          if( my_car_service_instance ) {
+            my_car_service_instance.setDownPayment(parseInt(down_payment));
+          }
+        }
+      }
+    } catch(ex) {
+      alert(ex.message);
+      error_occured = true;
+    }
+
+
+    if( error_occured === false )
+    {
+      my_car_service_instance.setInterestRate(get_selected_object("interest_rate").text);
+      my_car_service_instance.setDurationInMonths(get_selected_object("duration_in_months").text);
+      alert( my_car_service_instance.getLoanAmount() );
+      alert( my_car_service_instance.getDownPayment() );
+      alert( my_car_service_instance.getInterestRate() );
+      alert( my_car_service_instance.getDurationInMonths() );
+      alert( "Monthly Payment: $"+my_car_service_instance.calcMonthlyPayment());
+    }
   }
 
 
@@ -276,4 +330,73 @@ InProgressSpinner.showInProgressImage = function( section_id ) {
 InProgressSpinner.hideInProgressImage = function( section_id, waitingImage ) {
   var tag_used = document.getElementById(section_id);
   setTimeout( function() { document.getElementById(section_id).removeChild(waitingImage);},  500 );
+}
+
+
+
+
+
+function ElabedEnterprisesLLC() {};
+
+  // Static Method
+ElabedEnterprisesLLC.validate_numericality_of = function(element_id, error_id_prefix, error_message, regex) {
+  var element_text =  document.getElementById(element_id).value;
+  ElabedEnterprisesLLC.log("element_text: " + element_text);
+  var pattern = regex;
+  var result = pattern.test(element_text);
+  if( result === false ) {
+    ElabedEnterprisesLLC.display_error_message( element_id, error_message, error_id_prefix, true);
+    return false;
+  } else {
+    ElabedEnterprisesLLC.hide_error_message( element_id , error_id_prefix);
+    return true;
+  }
+}
+
+  // Static Method
+ElabedEnterprisesLLC.hide_error_message = function(id_of_parent_element, error_id_prefix) {
+  var id_name = error_id_prefix + id_of_parent_element;
+  var error_element = document.getElementById(id_name);
+  error_element.innerHTML = "";
+  error_element.style.display = "none";
+}
+
+  // Static Method
+ElabedEnterprisesLLC.display_error_message = function(id_of_parent_element, message, error_id_prefix, do_not_show_id_name) {
+  var id_name = error_id_prefix + id_of_parent_element;
+  var error_element = document.getElementById(id_name);
+  error_element.innerHTML = (do_not_show_id_name ? "" : id_of_parent_element) + " " + message;
+  error_element.style.display = "inline";
+}
+
+  // Static Method
+ElabedEnterprisesLLC.validate_textfield_is_not_empty = function ( element_id, error_id_prefix) {
+  ElabedEnterprisesLLC.log("inside validate_textfield_is_not_empty() for element " + element_id);
+  var node = document.getElementById(element_id);
+  var text;
+  if( node === null || node.value === null || node.value === '' ) {
+    ElabedEnterprisesLLC.display_error_message( element_id , " cannot be empty", error_id_prefix, false);
+    return false;
+  } else {
+    ElabedEnterprisesLLC.hide_error_message( element_id , error_id_prefix);
+    text = node.value;
+    ElabedEnterprisesLLC.log( text );
+    ElabedEnterprisesLLC.log( typeof text);
+    return true;
+  }
+}
+
+  // Static Vars here
+ElabedEnterprisesLLC.debug_flag = false;
+ElabedEnterprisesLLC.error_id_prefix = "error_message_for_"
+
+  // Static Method
+ElabedEnterprisesLLC.log = function(s) {
+  if (ElabedEnterprisesLLC.debug_flag) {
+    if (typeof console !== "undefined" && typeof console.debug !== "undefined") {
+      console.log(s);
+    } else {
+     alert(s);
+    }
+  }
 }
