@@ -51,8 +51,58 @@ function CarService() {
 
 };
 
+
+
+//
+//
+//
+//The formula has a principal, P, interest rate, r, and number of monthly payments, m.
+//
+//   P ( r / 12 )
+//-------------------------
+//                     -m  
+//  (1 - ( 1 + r / 12 )   )
+//
+//For example, a 3 year (36 month) loan of $15,000 at 7% interest would look like this:
+//
+//    15000 ( 0.07/ 12 )
+//------------------------------
+//                         -36
+//   (1 - ( 1 + 0.07 / 12 )    )
+//
+//The payment for this car will be $463.16 per month.
+//
+//
+//
 CarService.prototype.calcMonthlyPayment = function() {
-  return 5000;
+  var amount_financed =  this.getLoanAmount() - this.getDownPayment();
+  //alert("amount financed=" + amount_financed );
+  var monthly_interest_rate = (this.getInterestRate() / 100.0) / 12.0;
+  //alert("monthly interest rate=" + monthly_interest_rate );
+
+  var n = this.getDurationInMonths() * 1.0;
+  var i = monthly_interest_rate * 1.0;
+  var p = amount_financed * 1.0;
+
+  //alert( "n="+n);
+  //alert( "i="+i);
+  //alert( "p="+p);
+  //alert( "math power test: " + Math.pow(2.0,4.0) );
+
+  var one_plus_i_to_minus_n = Math.pow((1.0+i),(-n));
+
+
+  //alert( "one_plus_i_to_minus_n: " + one_plus_i_to_minus_n );
+
+  var nominator = p * ( i );
+  //alert("nominator=" + nominator );
+  var denominator = 1 - one_plus_i_to_minus_n;
+  //alert("denominator=" + denominator );
+
+  var monthly_payment = nominator / denominator;
+  //alert("monthly payment=" + monthly_payment );
+
+  return monthly_payment;
 }
 
 // learned this style of encapsulating all code in a function that returns an object containing
@@ -87,7 +137,7 @@ var CarServiceMisc = ( function () {
                                                           "numbers only, 2 to 7 digits",
                                                           /^([0-9]{2,7})$/ ) == true ) {
           if( my_car_service_instance && loan_amount ) {
-            my_car_service_instance.setLoanAmount(parseInt(loan_amount));
+            my_car_service_instance.setLoanAmount(parseFloat(loan_amount));
             loan_amount_valid = true;
           }
         }
@@ -102,10 +152,10 @@ var CarServiceMisc = ( function () {
       if( ElabedEnterprisesLLC.validate_textfield_is_not_empty("down_payment", error_id_prefix) == true ) {
         if( ElabedEnterprisesLLC.validate_numericality_of("down_payment",
                                                           error_id_prefix,
-                                                          "numbers only, 2 to 6 digits",
-                                                          /^([0-9]{2,6})$/ ) == true ) {
+                                                          "numbers only, 1 to 6 digits",
+                                                          /^([0-9]{1,6})$/ ) == true ) {
           if( my_car_service_instance && down_payment ) {
-            my_car_service_instance.setDownPayment(parseInt(down_payment));
+            my_car_service_instance.setDownPayment(parseFloat(down_payment));
             down_payment_valid = true;
           }
         }
@@ -118,12 +168,12 @@ var CarServiceMisc = ( function () {
 
     if( error_occured === false && loan_amount_valid && down_payment_valid )
     {
-      my_car_service_instance.setInterestRate(get_selected_object("interest_rate").text);
-      my_car_service_instance.setDurationInMonths(get_selected_object("duration_in_months").text);
-      alert( my_car_service_instance.getLoanAmount() );
-      alert( my_car_service_instance.getDownPayment() );
-      alert( my_car_service_instance.getInterestRate() );
-      alert( my_car_service_instance.getDurationInMonths() );
+      my_car_service_instance.setInterestRate(parseFloat(get_selected_object("interest_rate").text));
+      my_car_service_instance.setDurationInMonths(parseFloat(get_selected_object("duration_in_months").text));
+      //alert( my_car_service_instance.getLoanAmount() );
+      //alert( my_car_service_instance.getDownPayment() );
+      //alert( my_car_service_instance.getInterestRate() );
+      //alert( my_car_service_instance.getDurationInMonths() );
       alert( "Monthly Payment: $"+my_car_service_instance.calcMonthlyPayment());
     }
   }
@@ -222,7 +272,7 @@ var CarServiceMisc = ( function () {
 
 
   function a_car_trim_callback(result_obj, that) {
-    that.setCarPrice( result_obj.car_trim.price );
+    that.setCarPrice( parseFloat(result_obj.car_trim.price) );
     //alert("you selected: " +
     //  "\n"+that.getCarMake()+
     //  "\n"+that.getCarModel()+
