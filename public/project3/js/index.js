@@ -174,7 +174,9 @@ var CarServiceMisc = ( function () {
       //alert( my_car_service_instance.getDownPayment() );
       //alert( my_car_service_instance.getInterestRate() );
       //alert( my_car_service_instance.getDurationInMonths() );
-      alert( "Monthly Payment: $"+my_car_service_instance.calcMonthlyPayment());
+      var monthlyPay = my_car_service_instance.calcMonthlyPayment();
+      var roundedPayment = Math.round(monthlyPay*100)/100;
+      alert( "Monthly Payment: $"+roundedPayment );
     }
   }
 
