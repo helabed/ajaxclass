@@ -1,14 +1,4 @@
 class CarMakesController < ApplicationController
-
-  def listVj
-    @car_makes = CarMake.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @car_makes }
-    end
-  end
-
   # GET /car_makes
   # GET /car_makes.xml
   def index

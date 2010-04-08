@@ -18,7 +18,11 @@ class CarTrimsController < ApplicationController
   # GET /car_trims/1
   # GET /car_trims/1.xml
   def show
-    @car_trim = CarTrim.find(params[:id])
+    if params[:id] != '0'
+      @car_trim = CarTrim.find(params[:id])
+    else
+      @car_trim = []
+    end
 
     respond_to do |format|
       format.html # show.html.erb

@@ -76,32 +76,22 @@ function CarService() {
 //
 CarService.prototype.calcMonthlyPayment = function() {
   var amount_financed =  this.getLoanAmount() - this.getDownPayment();
-  //alert("amount financed=" + amount_financed );
+
+  var monthly_payment;
   var monthly_interest_rate = (this.getInterestRate() / 100.0) / 12.0;
-  //alert("monthly interest rate=" + monthly_interest_rate );
 
   var n = this.getDurationInMonths() * 1.0;
   var i = monthly_interest_rate * 1.0;
   var p = amount_financed * 1.0;
 
-  //alert( "n="+n);
-  //alert( "i="+i);
-  //alert( "p="+p);
-  //alert( "math power test: " + Math.pow(2.0,4.0) );
-
-  var one_plus_i_to_minus_n = Math.pow((1.0+i),(-n));
-
-
-  //alert( "one_plus_i_to_minus_n: " + one_plus_i_to_minus_n );
-
-  var nominator = p * ( i );
-  //alert("nominator=" + nominator );
-  var denominator = 1 - one_plus_i_to_minus_n;
-  //alert("denominator=" + denominator );
-
-  var monthly_payment = nominator / denominator;
-  //alert("monthly payment=" + monthly_payment );
-
+  if( i === 0 ) {
+    monthly_payment = p * 1.0 / n;
+  } else {
+    var one_plus_i_to_minus_n = Math.pow((1.0+i),(-n));
+    var nominator = p * ( i );
+    var denominator = 1 - one_plus_i_to_minus_n;
+    monthly_payment = nominator / denominator;
+  }
   return monthly_payment;
 }
 
@@ -233,7 +223,12 @@ var CarServiceMisc = ( function () {
 
   function populate_car_trims_selection() {
     var selected_car_model_id = document.getElementById("carModels").value;
+    //alert( "before" );
     make_ajax_request("/car_trims.json?car_model_id="+selected_car_model_id, car_trims_callback)
+    //alert( "after" );
+    if ( selected_car_model_id === "0" ) {
+      document.getElementById("loan_amount").value = '';
+    }
   }
 
 
@@ -248,28 +243,35 @@ var CarServiceMisc = ( function () {
   }
 
   function car_trims_selection_changed() {
+    //alert( "before" );
     var selected_car_trim = get_selected_object("carTrims");
     var car_trim_id = selected_car_trim.value;
-    var car_trim_text = selected_car_trim.text;
+    if( car_trim_id !== "0" ) {
+      var car_trim_text = selected_car_trim.text;
 
-    var selected_car_model = get_selected_object("carModels");
-    var car_model_id = selected_car_model.value;
-    var car_model_text = selected_car_model.text;
+      var selected_car_model = get_selected_object("carModels");
+      var car_model_id = selected_car_model.value;
+      var car_model_text = selected_car_model.text;
 
-    var selected_car_make = get_selected_object("carMakes");
-    var car_make_id = selected_car_make.value;
-    var car_make_text = selected_car_make.text;
+      var selected_car_make = get_selected_object("carMakes");
+      var car_make_id = selected_car_make.value;
+      var car_make_text = selected_car_make.text;
 
-    var myService = new CarService();
-    myService.setCarMake(car_make_text);
-    myService.setCarModel(car_model_text);
-    myService.setCarTrim(car_trim_text);
+      var myService = new CarService();
+      myService.setCarMake(car_make_text);
+      myService.setCarModel(car_model_text);
+      myService.setCarTrim(car_trim_text);
 
-    var my_2_params_function = function(result_obj) {
-      var car_service_obj = myService;
-      a_car_trim_callback(result_obj, car_service_obj);
+      var my_2_params_function = function(result_obj) {
+        var car_service_obj = myService;
+        a_car_trim_callback(result_obj, car_service_obj);
+      }
+      //alert( "before ajax" );
+      make_ajax_request("/car_trims/"+car_trim_id+".json", my_2_params_function)
+      //alert( "after" );
+    } else {
+      document.getElementById("loan_amount").value = '';
     }
-    make_ajax_request("/car_trims/"+car_trim_id+".json", my_2_params_function)
   }
 
 
@@ -329,26 +331,36 @@ var CarServiceMisc = ( function () {
 
 
   function make_ajax_request(request, call_back_function) {
-    var spinner_id = "spinner";
-    var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
-    var ajaxObj;
-    if(window.XMLHttpRequest) {
-      ajaxObj = new XMLHttpRequest();
-    } else {
-      ajaxObj = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    ajaxObj.onreadystatechange = function() {
-      if(ajaxObj.readyState==4) {
-        var myObj = JSON.parse(ajaxObj.responseText);
-        call_back_function(myObj);
-        InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
+    try {
+      var spinner_id = "spinner";
+      var inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
+      var ajaxObj;
+      if(window.XMLHttpRequest) {
+        ajaxObj = new XMLHttpRequest();
+      } else {
+        ajaxObj = new ActiveXObject("Microsoft.XMLHTTP");
       }
-    }
-    //open (method, url, async)
-    ajaxObj.open("get", request, true);
+      ajaxObj.onreadystatechange = function() {
+        if(ajaxObj.readyState==4) {
+          try {
+            var myObj = JSON.parse(ajaxObj.responseText);
+            call_back_function(myObj);
+            InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
+          } catch ( ex ) {
+            InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
+            alert(ex.message + ex.lineNumber + ex.stack);
+          }  
+        }
+      }
+      //open (method, url, async)
+      ajaxObj.open("get", request, true);
 
-    //send
-    ajaxObj.send(null);
+      //send
+      ajaxObj.send(null);
+    } catch ( ex ) {
+      InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
+      alert(ex.message + ex.lineNumber + ex.stack);
+    }  
   }
 
 
