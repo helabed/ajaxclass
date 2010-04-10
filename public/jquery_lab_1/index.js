@@ -4,20 +4,31 @@ $(document).ready( function() {
 
   //alert("hello");
 
-	var username = $("#txtName").val();
-	var password = $("#txtPassword").val();
 
-	//alert( username );
-	//alert( password );
+  //alert( username );
+  //alert( password );
 
   $("#btnLogin").click( function() {
-    $.post(	"/users/login", 
-						{"username":username, "password":password}, 
-						function(a) {
-							alert( "Server Response: "+ a );
-						}
-					);
-  	});
+    var username = $("#txtName").val();
+    var password = $("#txtPassword").val();
+    $.post(  "/users/login",
+            {"username":username, "password":password},
+            function(a) {
+              if( a === 'true' ) {
+                alert( "You are a valid user... enjoy" );
+                var my_form = document.getElementById("login");
+                var form_elements = my_form.elements;
+                var my_action = jQuery('#login').attr('action');
+                my_action = "/tasks/my_tasks/"+username;
+                jQuery('#login').attr('action', my_action );
+                //alert( jQuery('#login').attr('action') );
+                my_form.submit();
+              } else {
+                alert( "username/password not valid" );
+              }
+            }
+          );
+    });
 
 
 

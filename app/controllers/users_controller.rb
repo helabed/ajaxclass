@@ -2,16 +2,16 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def login
-		#user = User.find(params[:username]
+    #user = User.find(params[:username]
     user = User.find(:all, :conditions => ["username = ? and password = ?", params[:username], params[:password]])
 
-		valid = false
-		if user
-			valid = true
-		end
-		
-		render :text => "I got, username: #{params[:username]}, password: #{params[:password]} user is #{valid}"
-	end
+    valid = false
+    if user.size == 1
+      valid = true
+    end
+
+    render :text => "#{valid}"
+  end
   def index
     @users = User.all
 

@@ -1,8 +1,23 @@
 class TasksController < ApplicationController
+  def my_tasks
+    @users = User.find(:all, :conditions => ["username = ?", params[:id]])
+    @tasks = Task.all(:conditions => ["user_id = ?", @users.first.id] )
+
+    logger.debug "params: #{params.map.join(", ")}"
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.xml  { render :xml => @tasks }
+      format.json { render :layout => false, :json => @tasks }
+    end
+  end
+
   # GET /tasks
   # GET /tasks.xml
   def index
     @tasks = Task.all
+
+    logger.debug "params: #{params.map.join(", ")}"
 
     respond_to do |format|
       format.html # index.html.erb
