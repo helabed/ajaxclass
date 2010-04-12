@@ -1,6 +1,7 @@
 class TasksController < ApplicationController
   def my_tasks
     @users = User.find(:all, :conditions => ["username = ?", params[:id]])
+    @user = @users.first
     @tasks = Task.all(:conditions => ["user_id = ?", @users.first.id] )
 
     logger.debug "params: #{params.map.join(", ")}"

@@ -1,20 +1,31 @@
 <h1>Listing tasks</h1>
 
+<form action="/tasks" class="new_task" id="new_task" method="post">
+  <div style="margin:0;padding:0;display:inline">
+    <input name="authenticity_token" type="hidden" value="exqg66xMXmIy0Cva7BONcgk2YSncqA9pA1qdhCYB5fk=" />
+  </div>
+
+  Add Task: <input type="text" id="txtTask" />
+  <input type="button" id="btnAdd" value="add task" />
+</form>
+
 <table>
   <tr>
     <th>User</th>
     <th>Description</th>
   </tr>
+  <div id="task_list">
 
-<% @tasks.each do |task| %>
-  <tr>
-    <td><%=h task.user.username %></td>
-    <td><%=h task.description %></td>
-    <td><%= link_to 'Show', task %></td>
-    <td><%= link_to 'Edit', edit_task_path(task) %></td>
-    <td><%= link_to 'Destroy', task, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%=h task.user.username %></td>
+        <td><%=h task.description %></td>
+        <td><%= link_to 'Show', task %></td>
+        <td><%= link_to 'Edit', edit_task_path(task) %></td>
+        <td><%= link_to 'Destroy', task, :confirm => 'Are you sure?', :method => :delete %></td>
+      </tr>
+    <% end %>
+  </div>
 </table>
 
 <br />
