@@ -8,7 +8,7 @@
 
 <% @tasks.each do |task| %>
   <tr>
-    <td><%=h task.user.username %></td>
+    <td><%=h task.user.username if task.user %></td>
     <td><%=h task.description %></td>
     <td><%= link_to 'Show', task %></td>
     <td><%= link_to 'Edit', edit_task_path(task) %></td>

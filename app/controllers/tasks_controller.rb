@@ -2,7 +2,7 @@ class TasksController < ApplicationController
   def my_tasks
     @users = User.find(:all, :conditions => ["username = ?", params[:id]])
     @user = @users.first
-    @tasks = Task.all(:conditions => ["user_id = ?", @users.first.id] )
+    @tasks = Task.all(:conditions => ["user_id = ?", @user.id] )
 
     logger.debug "params: #{params.map.join(", ")}"
 
@@ -67,9 +67,11 @@ class TasksController < ApplicationController
         flash[:notice] = 'Task was successfully created.'
         format.html { redirect_to(@task) }
         format.xml  { render :xml => @task, :status => :created, :location => @task }
+        format.json { render :layout => false, :json => @task }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @task.errors, :status => :unprocessable_entity }
+        format.json { render :layout => false, :json => @task }
       end
     end
   end

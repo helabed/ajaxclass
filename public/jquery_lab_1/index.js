@@ -1,13 +1,5 @@
-// or
 // jQuery(document).ready( function() { //initialization code goes here });
 $(document).ready( function() {
-
-  //alert("hello");
-
-
-  //alert( username );
-  //alert( password );
-
   $("#btnLogin").click( function() {
     var username = $("#txtName").val();
     var password = $("#txtPassword").val();
@@ -37,4 +29,4 @@ $(document).ready( function() {
   //  $.get("cubs.php", {"team":"bears"}, function(a) {alert(a);});
   //});
 
-} );
+});
