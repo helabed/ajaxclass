@@ -23,7 +23,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @tasks }
-      format.json { render :layout => false, :json => @tasks } 
+      format.json { render :layout => false, :json => @tasks }
     end
   end
 
@@ -35,7 +35,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @task }
-      format.json { render :layout => false, :json => @task } 
+      format.json { render :layout => false, :json => @task }
     end
   end
 
@@ -102,6 +102,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(tasks_url) }
       format.xml  { head :ok }
+      format.json { render :layout => false, :json => @task }
     end
   end
 end
