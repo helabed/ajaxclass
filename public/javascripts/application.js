@@ -18,6 +18,8 @@ $(document).ready( function() {$
 
 
 
+
+
   $.get(  "/tasks/my_tasks/"+$("input[name=user_username]").val()+".json",
           {},
           function(tasks) {
@@ -33,14 +35,21 @@ $(document).ready( function() {$
           }
         );
 
-
 });
+
+
+
+
 
 function removeTask(responseObj) {
   //alert( "task being removed" );
   var to_be_removed = document.getElementById("task_"+responseObj.id);
   to_be_removed.parentNode.removeChild( to_be_removed );
 }
+
+
+
+
 
 function addTask(responseObj) {
   if( responseObj ) {
