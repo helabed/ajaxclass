@@ -8,8 +8,8 @@ $(document).ready( function() {$
              "task[description]":$("#txtTask").val()},
             function(a) {
               var task = a.task;
-              alert(task.id);
-              alert(task.description);
+              //alert(task.id);
+              //alert(task.description);
               addTask(task);
             }
           );
@@ -21,13 +21,13 @@ $(document).ready( function() {$
   $.get(  "/tasks/my_tasks/"+$("input[name=user_username]").val()+".json",
           {},
           function(tasks) {
-            alert( "alive: size: "+tasks.length );
+            //alert( "alive: size: "+tasks.length );
             for(var i=0; i < tasks.length; i++ ) {
-              alert( i );
+              //alert( i );
               var a = tasks[i];
               var task = a.task;
-              alert(task.id);
-              alert(task.description);
+              //alert(task.id);
+              //alert(task.description);
               addTask(task);
             }
           }
@@ -37,14 +37,14 @@ $(document).ready( function() {$
 });
 
 function removeTask(responseObj) {
-  alert( "task being removed" );
+  //alert( "task being removed" );
   var to_be_removed = document.getElementById("task_"+responseObj.id);
   to_be_removed.parentNode.removeChild( to_be_removed );
 }
 
 function addTask(responseObj) {
   if( responseObj ) {
-    var task = document.createElement("div"); //<div></div>
+    var task = document.createElement("li"); //<div></div>
     $(task).attr("id", "task_"+responseObj.id);
     if( responseObj )
     {
@@ -67,8 +67,8 @@ function addTask(responseObj) {
               {},
               function(a) {
                 var task = a.task;
-                alert(task.id);
-                alert(task.description);
+                //alert(task.id);
+                //alert(task.description);
                 removeTask(task);
               }
             );
