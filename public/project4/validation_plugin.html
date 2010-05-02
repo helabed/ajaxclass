@@ -1,0 +1,81 @@
+<html>
+  <head>
+    <script type="text/javascript" src="./js/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="./js/jquery-ui-1.8.custom.min.js"></script>
+    <script type="text/javascript" src="./js/jquery-validate/jquery.validate.js"></script>
+    
+    <link   type="text/css" rel="stylesheet" href="./css/ui-lightness/jquery-ui-1.8.custom.css" />
+    <script type="text/javascript" src="./facebox/jquery.facebox.js"></script>
+    <script type="text/javascript" src="./js/facebox.js"></script>
+    <link   type="text/css" rel="stylesheet" href="./facebox/facebox.css" />
+    
+    
+    
+    <style type="text/css">
+* { font-family: Verdana; font-size: 96%; } label { width: 10em; float: left; } label.error { float: none; color: red; padding-left: .5em; vertical-align: top; } div { clear: both; } input, textarea { width: 15em; } .submit { margin-left: 10em; }
+</style>
+    
+    <title>MATC-Ajax Class - Project 4 - Hani Elabed</title>
+  </head>
+<body>
+<h1>Hani Elabed</h1>
+<div id="accordion_1">
+	<h3><a href="#section1">Validation Plugin</a></h3>
+	<div>
+    <h3>Validate forms like you've never been validating before! </h3>
+		<p>Setup powerful client-side form validation. From a protoype in a few minutes to heavily customized validation rules, methods and messages.</p>
+    <h4>Features</h4>
+    
+    <ul>
+        <li>Easy to setup</li>
+        <li>19 built-in validation methods, more in addition</li>
+        <li>Inline-error-message display (no more alerts!), heavily customizable</li>
+        <li>Extensible: Add your own validation methods and reuse them</li>
+        <li>Use inline metadata or plugin options to specify your validation rules</li>
+        <li>Carefully designed interaction: Doesn't annoy users with errors they hadn't a chance to fix, but gives them feedback as early as possible when fixing errors, via filtered keyup and blur events on each field</li>
+    </ul>	
+  </div>
+	<h3><a href="#section2">Working Example</a></h3>
+	<div>
+	
+  <form id="commentForm" method="get" action=""> <fieldset>
+<legend>A simple comment form with submit validation and default messages</legend> <div>
+<label for="cname">Name</label>
+<input id="cname" name="name" class="required" minlength="2" /> </div>
+<div> <label for="cemail">E-Mail</label> <input id="cemail" name="email" class="required email" />
+</div> <div>
+<label for="curl">URL (optional)</label>
+<input id="curl" name="url" class="url" value="" /> </div>
+<div> <label for="ccomment">Your comment</label> <textarea id="ccomment" name="comment" class="required"></textarea>
+</div> <div>
+<input class="submit" type="submit" value="Submit"/> </div>
+</fieldset> </form>
+  <script type="text/javascript">
+jQuery(document).ready(function($){ $("#commentForm").validate();
+}); </script>
+  
+  
+  </div>
+	<h3><a href="#section3">Source Code</a></h3>
+	<div>
+  
+      <p>
+      Source at <a rel="facebox" href="http://plugins.jquery.com/project/validate">http://plugins.jquery.com/project/validate</a>
+      </p>
+  
+  </div>
+</div>
+
+</body>
+</html>
+
+	
+	<script type="text/javascript">
+	$(function() {
+		$("#accordion_1").accordion({
+			autoHeight: false,
+			navigation: true
+		});
+	});
+	</script>
+
