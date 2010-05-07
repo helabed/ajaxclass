@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  def server_dot_php
+    render :text => 'I am alive'
+  end
   # GET /users
   # GET /users.xml
   def login

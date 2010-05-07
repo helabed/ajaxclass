@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.connect '/server.php', :controller => 'users', :action => 'server_dot_php' 
   map.resources :tasks
 
   map.resources :users
