@@ -1,3 +1,85 @@
+
+-This is the README file and can be found at the application root folder.
+
+-This application has been deployed online for your convenience, you can
+find it and run it from:
+
+  http://ajaxclass.rubywebworks.com/project4/index.html
+
+-I also used http://github.com as my source repostiory as I was creating it.
+You can see my very long history of commits there. The project can be cloned or
+forked by anybody, it is at:
+
+  http://github.com/helabed/ajaxclass
+
+  The history link is at:
+
+  http://github.com/helabed/ajaxclass/commits/master/
+
+-If you choose to examine the relevant files
+they are located at:
+
+  /public/project4/
+
+-To run this application locally on your machine, you need to have
+installed Rails 2.3.5 and Ruby 1.8.7 and SQLite3.
+
+  1-From the application root directory, run
+
+    ruby --version
+
+    rails --version
+
+    sqlite3 --version
+
+    On my iMac when I run these, I get respectively:
+
+      ruby 1.8.7 (2009-06-08 patchlevel 173) [universal-darwin10.0]
+
+      Rails 2.3.5
+
+      3.6.12
+
+  2-rename the file ./config/database.yml.example to ./config/database.yml
+      ( this is the standard DB config file for SQLite3 )
+
+  3-if ruby and rails were setup successfully and SQLite3 is also setup succesfully,
+      you can type:
+
+        rake db:create  ( this will create the SQLite database file for you )
+
+        rake db:migrate ( this will populate the database from the DB migration files that I created )
+
+            ( FYI, all DB migration file can be viewed from : ./db/migrate/* )
+            ( they are ruby file with timestamped names that can be used to revert and repopulate
+              the DB at will at anytime you want to )
+
+  4-Assuming no Errors, and always, From this application root folder, run:
+
+     ./script/server  
+
+       or 
+
+     ruby .\script\server ( for windows )
+
+-Go to your browser at:
+
+  http://localhost:3000/project4/index.html
+
+  and... enjoy it.
+
+
+
+================================================================================
+================================================================================
+================================================================================
+The section below is the readme file for PROJECT 3.. enjoy
+================================================================================
+================================================================================
+================================================================================
+
+
+
 -This is the README file and can be found at the application root folder.
 
 -This application has been deployed online for your convenience, you can
