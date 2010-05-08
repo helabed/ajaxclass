@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
+  def motd_dot_php
+    render :text => "Good Morning #{params[:uname]}"
+  end
+
   def server_dot_php
-    render :text => 'I am alive'
+    render :text => "Greetings !!!\nid:  #{params[:id]}\nemail: #{params[:email]}"
   end
   # GET /users
   # GET /users.xml

@@ -2,9 +2,9 @@
 $(document).ready( function() {
   var spinner_id = "spinner";
   var inProgressImage = null;
-  $("#btnLogin").click( function() {
-    var id = '4';
-    var email = 'bgates@msn.com';
+  $("#btnFireRequest").click( function() {
+    var id = $("#txtId").val();;
+    var email = $("#txtEmail").val();
     inProgressImage = InProgressSpinner.showInProgressImage(spinner_id);
     $.get("/server.php",
         {"id":id, "email":email},
@@ -15,7 +15,7 @@ $(document).ready( function() {
     var processResponse = 
         function(a) {
           try {
-            alert( "we have a response\n" + a );
+            alert( "we have a response\n\n" + a );
           } finally {
             if( inProgressImage) {
                 InProgressSpinner.hideInProgressImage(spinner_id, inProgressImage);
