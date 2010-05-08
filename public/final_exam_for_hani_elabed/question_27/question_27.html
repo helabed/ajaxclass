@@ -3,21 +3,30 @@
     >
 <html lang="en">
 <head>
-    <title>MATC-AjaxClass-MidtermExam-Question27-For-Hani Elabed</title>
+    <title>MATC-AjaxClass-FinalExam-Question27-For-Hani Elabed</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-ui-1.8.custom.min.js"></script>
+    <link type="text/css" href="ui-lightness/jquery-ui-1.8.custom.css" rel="stylesheet" />
+    
     <script type="text/javascript" src="question_27.js"></script>
 </head>
 <body>
     Question 27
     <br />
-    Hello: 
+    <ul id="items_to_drag">
+      <li class='draggable'>item1</li>
+      <li class='draggable'>item2</li>
+      <li class='draggable'>item3</li>
+      <li class='draggable'>item4</li>
+    </ul>
+    
+    <div id="cart">
+      <img height="80px" width="60px" src="shoppingCart.jpg" alt="items in cart" />
+    </div>
+    
+    <ul id="items_in_cart">
+    </ul>
+
 </body>
 </html>
 
-
-<script type="text/javascript">
-if(navigator.appName=="Microsoft Internet Explorer") {
-    window.attachEvent("onload", init);
-} else {
-    window.addEventListener("load", init, false);
-}
-</script>

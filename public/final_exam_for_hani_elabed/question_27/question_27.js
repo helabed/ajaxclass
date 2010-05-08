@@ -1,42 +1,22 @@
-function get_xml_text() {
-    return "" +
-        "<states>" +
-            "<state>" +
-                "<abbreviation>WI</abbreviation>" +
-                "<fulltext>Wisconsin</fulltext>" +
-            "</state>" +
-            "<state>" +
-                "<abbreviation>IL</abbreviation>" +
-                "<fulltext>Illinois</fulltext>" +
-            "</state>" +
-            "<state>" +
-                "<abbreviation>MN</abbreviation>" +
-                 "<fulltext>Minnesota</fulltext>" +
-            "</state>" +
-        "</states>";
-
-}           
-        
-        
-function init() {    
-  var _states = get_xml_text();
-   
-  alert( _states );
-   
-  var doc0;
-  if(window.DOMParser) {
-    doc0 = new DOMParser().parseFromString(_states, "application/xml");
-  } else {
-    doc0 = new ActiveXObject("Microsoft.XMLDOM");
-    doc0.loadXML(_states);
-  }
-
-  var full_text = doc0.getElementsByTagName("fulltext")[1].childNodes[0].nodeValue;
+$(document).ready(function() {
     
-  alert(full_text);
-  
-  var item = document.createTextNode(full_text);
-  document.body.appendChild(item); 
-}
+  $("li.draggable").draggable({
+    "revert":true,
+    "start":function() {
+      $("#cart").css("border", "solid");
+    },
+    "stop": function() {
+      $("#cart").css("border", "none");
+    }
+  });
 
-
+  $("#cart").droppable({
+    "drop" :function(event, ui) {
+      $("#items_in_cart").html(
+        $("#items_in_cart").html()
+        +"<li>"+ ui.draggable.html() + "</li>");
+      ui.draggable.fadeOut();
+    }
+  });
+    
+})
